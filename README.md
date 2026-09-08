@@ -2,7 +2,7 @@
 
 A responsive personal profile page built for the **Newton School Coding Club × SRM IST** technical recruitment task (Task 2, First Year track).
 
-**[Live demo →](#https://devanshi-08.github.io/personal-intro-page/)** *(add your deployed link here once hosted — see [Deploying](#deploying) below)*
+**[Live demo →]([#https://devanshi-08.github.io/personal-intro-page/])** 
 
 ![Theme](https://img.shields.io/badge/theme-light%20%2F%20dark-8b6a32) ![Responsive](https://img.shields.io/badge/responsive-mobile%20--%20desktop-8b6a32) ![No frameworks](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-8b6a32)
 
