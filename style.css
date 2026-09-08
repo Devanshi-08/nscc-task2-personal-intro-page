@@ -1,0 +1,418 @@
+/* ============================================================
+   Devanshi Mishra — Personal Introduction Page
+   Design language: editorial / academic dossier.
+   Type: Fraunces (display) + Inter (body/UI)
+   ============================================================ */
+
+:root {
+  --paper: #efece3;
+  --paper-raised: #f8f6ef;
+  --ink: #1b1f26;
+  --ink-soft: #5a5f68;
+  --accent: #8b6a32;
+  --accent-soft: #8b6a3222;
+  --line: #d7d1c0;
+  --shadow: none;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --measure: 62ch;
+  --gap-lg: clamp(2rem, 4vw, 3.5rem);
+  --gap-md: 1.5rem;
+
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --paper: #12151a;
+  --paper-raised: #181c23;
+  --ink: #e9e6dd;
+  --ink-soft: #9aa0aa;
+  --accent: #d3ac71;
+  --accent-soft: #d3ac7122;
+  --line: #2b303a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  transition: background 0.35s ease, color 0.35s ease;
+  position: relative;
+}
+
+/* subtle paper grain for warmth, not a gradient wash */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+html[data-theme="dark"] .grain {
+  mix-blend-mode: screen;
+  opacity: 0.05;
+}
+
+a { color: inherit; }
+
+/* ---------------- Masthead ---------------- */
+
+.masthead {
+  position: relative;
+  z-index: 1;
+  padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1.25rem, 5vw, 3.5rem) 0;
+}
+
+.masthead__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.masthead__title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.masthead__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.masthead__role {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.01em;
+}
+
+.masthead__rule {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  height: 1px;
+  background: var(--line);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+
+@keyframes draw {
+  to { transform: scaleX(1); }
+}
+
+/* ---------------- Theme toggle ---------------- */
+
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-bottom: 0.3rem;
+}
+
+.theme-toggle__track {
+  display: flex;
+  align-items: center;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 3px;
+  background: var(--paper-raised);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle__thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(0);
+  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+}
+
+html[data-theme="dark"] .theme-toggle__thumb {
+  transform: translateX(24px);
+}
+
+.theme-toggle .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--paper);
+  position: absolute;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.icon--moon { opacity: 0; transform: scale(0.5) rotate(-40deg); }
+.icon--sun { opacity: 1; transform: scale(1) rotate(0); }
+
+html[data-theme="dark"] .icon--sun { opacity: 0; transform: scale(0.5) rotate(40deg); }
+html[data-theme="dark"] .icon--moon { opacity: 1; transform: scale(1) rotate(0); }
+
+.theme-toggle:focus-visible .theme-toggle__track,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------------- Layout ---------------- */
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 5vw, 3.5rem) 0;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--gap-lg);
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .sheet {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------- Sidebar ---------------- */
+
+.sidebar {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    position: static;
+    max-width: 320px;
+  }
+}
+
+.portrait {
+  margin: 0;
+  border: 1px solid var(--line);
+  padding: 8px;
+  background: var(--paper-raised);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(0.15) contrast(1.02);
+}
+
+.facts {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.facts__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.facts__row dt {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.facts__row dd {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.connect {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.connect__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-size: 0.92rem;
+  color: var(--ink);
+  width: fit-content;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.connect__link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  transition: color 0.25s ease;
+}
+
+.connect__link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.connect__link:hover svg {
+  color: var(--accent);
+}
+
+/* ---------------- Content blocks ---------------- */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 3.75rem);
+  padding-bottom: 4rem;
+}
+
+.block__heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.block p {
+  max-width: var(--measure);
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.block p:last-child { margin-bottom: 0; }
+
+.block__closing {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-md);
+}
+
+@media (max-width: 640px) {
+  .focus-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.focus-group {
+  border-left: 1px solid var(--line);
+  padding-left: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .focus-group {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 0.9rem;
+  }
+}
+
+.focus-group__label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--accent);
+  margin: 0 0 0.7rem;
+  font-weight: 500;
+}
+
+.focus-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.94rem;
+}
+
+.connect-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.connect-inline a {
+  text-decoration: none;
+  font-size: 0.94rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.connect-inline a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------------- Footer ---------------- */
+
+.colophon {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem 1rem 2.5rem;
+  border-top: 1px solid var(--line);
+  margin-top: 1rem;
+}
+
+.colophon p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
